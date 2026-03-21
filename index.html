@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black">
+    <title>Simple Counter</title>
+    
+    <link rel="icon" href="image_13.png">
+    <link rel="apple-touch-icon" href="image_13.png">
+
+    <style>
+        body { font-family: -apple-system, BlinkMacSystemFont, sans-serif; background-color: #fff; margin: 0; color: #111; -webkit-font-smoothing: antialiased; overflow: hidden; touch-action: manipulation; }
+        
+        /* タップ領域全体をメインアクションに */
+        .tap-area { width: 100vw; height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; cursor: pointer; }
+        
+        .container { text-align: center; pointer-events: none; }
+        h1 { font-size: 1.2rem; font-weight: 800; color: #aaa; margin-bottom: 10px; text-transform: uppercase; }
+        
+        /* カウント数字 */
+        #count { font-size: 120px; font-weight: 800; letter-spacing: -4px; margin: 0; transition: transform 0.1s; }
+        .bump { transform: scale(1.1); }
+
+        /* 操作パネル（タップを邪魔しないように配置） */
+        .controls { position: fixed; bottom: 150px; left: 0; width: 100%; display: flex; justify-content: center; gap: 20px; pointer-events: auto; }
+        .btn-sub { width: 60px; height: 60px; background-color: #f0f0f0; border: none; border-radius: 15px; font-size: 24px; font-weight: 700; color: #666; cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-appearance: none; }
+        .btn-sub:active { transform: scale(0.9); background-color: #ddd; }
+        
+        footer { position: fixed; bottom: 0; width: 100%; padding-bottom: 30px; text-align: center; font-size: 0.7rem; color: #aaa; line-height: 1.8; border-top: 1px solid #eee; background: #fff; pointer-events: auto; }
+        .install-btn { background: #f0f0f0; color: #111; border: none; padding: 10px 20px; border-radius: 20px; font-weight: 700; cursor: pointer; margin-bottom: 15px; font-size: 0.75rem; -webkit-appearance: none; }
+
+        /* モーダル */
+        #install-modal { display:none; position:fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.5); z-index:1000; align-items: center; justify-content: center; backdrop-filter: blur(2px); pointer-events: auto; }
+        .modal-content { background: white; padding: 30px; border-radius: 16px; width: 85%; max-width: 300px; position: relative; text-align: left; }
+        .btn-close-modal { position: absolute; top: 15px; right: 15px; background:none; border:none; font-size:22px; color: #ccc; cursor: pointer; }
+    </style>
+</head>
+<body onclick="add(1)">
+
+<div class="tap-area">
+    <div class="container">
+        <h1>Count</h1>
+        <p id="count">0</p>
+    </div>
+</div>
+
+<div class="controls">
+    <button class="btn-sub" onclick="event.stopPropagation(); add(-1)">−</button>
+    <button class="btn-sub" onclick="event.stopPropagation(); resetCount()">C</button>
+</div>
+
+<footer>
+    <button class="install-btn" onclick="showInstall()">📱 Add to Home Screen</button>
+    <div>No login / No tracking / Browser only</div>
+    <div>No server / No Ads</div>
+    <div>Privacy Policy</div>
+    <div style="margin-top: 5px;">Simple Counter © 2026</div>
+</footer>
+
+<div id="install-modal" onclick="hideInstall()">
+    <div class="modal-content" onclick="event.stopPropagation()">
+        <button class="btn-close-modal" onclick="hideInstall()">✕</button>
+        <h2 style="font-size: 1.2rem; margin-top:0; font-weight: 800;">📱 Install</h2>
+        <p style="font-size: 0.85rem; color: #555;">Add to your home screen.</p>
+        <div style="font-size: 0.8rem; background: #f9f9f9; padding: 15px; border-radius: 10px; margin-top:15px; border: 1px solid #eee;">
+            <strong>🍏 iPhone:</strong> Share > Add to Home Screen<br>
+            <strong>🤖 Android:</strong> Menu > Add to Home screen
+        </div>
+    </div>
+</div>
+
+<script>
+    let n = 0;
+    const countEl = document.getElementById('count');
+
+    function add(val) {
+        n = Math.max(0, n + val); // 0以下にはならない
+        countEl.innerText = n;
+        
+        // アニメーション効果
+        countEl.classList.remove('bump');
+        void countEl.offsetWidth; 
+        countEl.classList.add('bump');
+    }
+
+    function resetCount() {
+        if(confirm("Reset count?")) {
+            n = 0;
+            countEl.innerText = n;
+        }
+    }
+
+    function showInstall() { document.getElementById('install-modal').style.display = 'flex'; }
+    function hideInstall() { document.getElementById('install-modal').style.display = 'none'; }
+</script>
+</body>
+</html>
