@@ -1,7 +1,15 @@
 # Simple Counter
-A pure, distraction-free counter. Tap anywhere to count.
+Just a button and a number. For when you just need to count.
 
-### 🛠 Fridge Combo Standard
-* **Big Tap Area**: Easy to use while focusing on your task.
-* **Minimalist UI**: White background, black buttons, 15px rounded corners.
-* **Privacy First**: No login, No tracking, No ads.
+## Philosophy
+* **1 Tool, 1 Action.**
+* **No Login / No Ads / No Tracking**
+* **Browser-only Privacy**
+
+## How to Use
+1. Tap or click to count.
+2. Simple. No settings required.
+
+---
+No login / No tracking / No ads / Browser only Privacy Policy  
+**afrorakda © 2026**
