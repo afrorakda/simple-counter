@@ -47,16 +47,13 @@
         }
         #tap-area:active { background: var(--accent); }
         
-        /* 数字の横揺れを防止するためにtabular-nums（等幅）を指定 */
+        /* 丁寧な変化：アニメーションを一切排除し、等幅フォントで数字を固定 */
         #count { 
             font-size: 120px; font-weight: 800; letter-spacing: -4px; margin: 0; 
             color: var(--main);
             font-variant-numeric: tabular-nums; 
             display: inline-block;
-            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        /* ガタガタせず、スッと浮き上がるアニメーション */
-        .bump { transform: translateY(-10px); }
 
         #controls { width: 100%; display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
         .btn-sub { 
@@ -127,12 +124,7 @@
     function add(val) {
         n = Math.max(0, n + val);
         countEl.innerText = n;
-        
-        // アニメーションのリセットと実行
-        countEl.classList.remove('bump');
-        void countEl.offsetWidth; 
-        countEl.classList.add('bump');
-        setTimeout(() => countEl.classList.remove('bump'), 100);
+        // アニメーション関連のクラス処理をすべて削除
     }
 
     function resetCount() {
