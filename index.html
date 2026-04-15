@@ -13,18 +13,19 @@
     <style>
         :root { --main: #333; --bg: #fff; --accent: #eee; --input-bg: #fafafa; --radius: 15px; }
         
+        /* 憲法：長押し選択禁止と、ズームなどの余計な挙動を完全停止 */
         * { 
             -webkit-touch-callout: none !important; 
             -webkit-user-select: none !important; 
             user-select: none !important; 
             -webkit-tap-highlight-color: transparent;
+            touch-action: none; /* ブラウザのデフォルト挙動を全停止して感度最大化 */
         }
 
         body { 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             background-color: var(--bg); display: flex; justify-content: center; 
             padding: 20px; margin: 0; color: var(--main); -webkit-font-smoothing: antialiased; 
-            touch-action: manipulation;
         }
 
         .container { width: 100%; max-width: 380px; min-height: 98vh; display: flex; flex-direction: column; position: relative; }
@@ -47,7 +48,6 @@
         }
         #tap-area:active { background: var(--accent); }
         
-        /* 丁寧な変化：アニメーションを一切排除し、等幅フォントで数字を固定 */
         #count { 
             font-size: 120px; font-weight: 800; letter-spacing: -4px; margin: 0; 
             color: var(--main);
@@ -60,6 +60,7 @@
             width: 80px; height: 80px; background-color: var(--accent); border: none; 
             border-radius: var(--radius); font-size: 32px; font-weight: 800; color: var(--main); 
             cursor: pointer; display: flex; align-items: center; justify-content: center; -webkit-appearance: none; 
+            touch-action: manipulation;
         }
         .btn-sub:active { transform: scale(0.92); opacity: 0.8; }
         
@@ -85,13 +86,13 @@
         <p class="subtitle">Tap screen to count. Simple as that.</p>
     </header>
     
-    <div id="tap-area" onclick="add(1)">
+    <div id="tap-area" onpointerdown="add(1)">
         <p id="count">0</p>
     </div>
 
     <div id="controls">
-        <button class="btn-sub" onclick="add(-1)">−</button>
-        <button class="btn-sub" onclick="resetCount()">C</button>
+        <button class="btn-sub" onpointerdown="add(-1)">−</button>
+        <button class="btn-sub" onpointerdown="resetCount()">C</button>
     </div>
 
     <footer id="dynamic-footer">
@@ -122,9 +123,10 @@
     const countEl = document.getElementById('count');
 
     function add(val) {
+        // pointerdownはマウスとタッチの両方に反応するため、イベントの重複を防ぐ。
+        // シンプルな実装のため、マイナスにならず、かつ即時に値を更新。
         n = Math.max(0, n + val);
         countEl.innerText = n;
-        // アニメーション関連のクラス処理をすべて削除
     }
 
     function resetCount() {
