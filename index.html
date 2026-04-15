@@ -13,7 +13,6 @@
     <style>
         :root { --main: #333; --bg: #fff; --accent: #eee; --input-bg: #fafafa; --radius: 15px; }
         
-        /* 憲法：長押し選択禁止と基本スタイル */
         * { 
             -webkit-touch-callout: none !important; 
             -webkit-user-select: none !important; 
@@ -30,7 +29,6 @@
 
         .container { width: 100%; max-width: 380px; min-height: 98vh; display: flex; flex-direction: column; position: relative; }
         
-        /* 構造：左上独立Hubボタン */
         .hub-link { 
             text-decoration: none; font-size: 0.8rem; font-weight: 800; color: var(--main); 
             background: var(--accent); padding: 8px 15px; border-radius: var(--radius); 
@@ -42,7 +40,6 @@
         h1 { font-size: 1.7rem; font-weight: 800; letter-spacing: -0.8px; margin: 0 0 5px; }
         .subtitle { font-size: 0.85rem; color: #666; font-weight: 500; }
 
-        /* Tap Area：15px角丸適用 */
         #tap-area { 
             width: 100%; height: 40vh; display: flex; align-items: center; justify-content: center; 
             cursor: pointer; background: var(--input-bg); border: 2px solid var(--accent); 
@@ -50,10 +47,17 @@
         }
         #tap-area:active { background: var(--accent); }
         
-        #count { font-size: 120px; font-weight: 800; letter-spacing: -4px; margin: 0; transition: transform 0.05s ease-out; color: var(--main); }
-        .bump { transform: scale(1.1); }
+        /* 数字の横揺れを防止するためにtabular-nums（等幅）を指定 */
+        #count { 
+            font-size: 120px; font-weight: 800; letter-spacing: -4px; margin: 0; 
+            color: var(--main);
+            font-variant-numeric: tabular-nums; 
+            display: inline-block;
+            transition: transform 0.1s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+        /* ガタガタせず、スッと浮き上がるアニメーション */
+        .bump { transform: translateY(-10px); }
 
-        /* Controls */
         #controls { width: 100%; display: flex; justify-content: center; gap: 15px; margin-bottom: 30px; }
         .btn-sub { 
             width: 80px; height: 80px; background-color: var(--accent); border: none; 
@@ -62,7 +66,6 @@
         }
         .btn-sub:active { transform: scale(0.92); opacity: 0.8; }
         
-        /* 鉄壁フッター */
         footer { margin-top: auto; padding: 30px 0 20px; text-align: center; border-top: 1px solid #f5f5f5; font-size: 12px; color: #666; font-weight: 600; }
         .footer-btns { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; }
         .kofi-btn { background: var(--main); color: #fff; padding: 12px; border-radius: var(--radius); text-decoration: none; font-weight: bold; font-size: 13px; display: flex; align-items: center; justify-content: center; }
@@ -70,7 +73,6 @@
         .footer-info { line-height: 1.6; }
         .footer-info a { color: inherit; text-decoration: underline; }
 
-        /* モーダル */
         #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); align-items: center; justify-content: center; z-index: 1000; }
         .modal-content { background: #fff; width: 85%; max-width: 340px; padding: 30px; border-radius: var(--radius); position: relative; text-align: left; }
         .close-x { position: absolute; top: 15px; right: 20px; font-size: 24px; color: #888; cursor: pointer; }
@@ -126,10 +128,11 @@
         n = Math.max(0, n + val);
         countEl.innerText = n;
         
+        // アニメーションのリセットと実行
         countEl.classList.remove('bump');
         void countEl.offsetWidth; 
         countEl.classList.add('bump');
-        setTimeout(() => countEl.classList.remove('bump'), 50);
+        setTimeout(() => countEl.classList.remove('bump'), 100);
     }
 
     function resetCount() {
